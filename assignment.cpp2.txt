@@ -1,0 +1,567 @@
+These examples use **C++ character arrays** and functions from `<cstring>`. Remember to leave room in destination arrays for the terminating `'\0'`.
+
+`strrev()` is not part of standard C++, so answers 10 and 11 use a small manual reversal loop instead.
+
+## 1. Find string length using `strlen()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char str[200];
+
+    cout << "Enter a string: ";
+    cin.getline(str, 200);
+
+    cout << "Length = " << strlen(str);
+    return 0;
+}
+```
+
+## 2. Count vowels using `strlen()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <cctype>
+using namespace std;
+
+int main() {
+    char str[200];
+    int vowels = 0;
+
+    cout << "Enter a string: ";
+    cin.getline(str, 200);
+
+    for (int i = 0; i < strlen(str); i++) {
+        char ch = tolower(static_cast<unsigned char>(str[i]));
+        if (ch == 'a' || ch == 'e' || ch == 'i' ||
+            ch == 'o' || ch == 'u')
+            vowels++;
+    }
+
+    cout << "Number of vowels = " << vowels;
+    return 0;
+}
+```
+
+## 3. Copy one string to another using `strcpy()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char source[200], destination[200];
+
+    cout << "Enter a string: ";
+    cin.getline(source, 200);
+
+    strcpy(destination, source);
+
+    cout << "Copied string: " << destination;
+    return 0;
+}
+```
+
+## 4. Check whether two strings are equal using `strcpy()` and comparison
+
+This copies the first string to another array, then compares the arrays with `strcmp()`.
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char first[200], copy[200], second[200];
+
+    cout << "Enter first string: ";
+    cin.getline(first, 200);
+
+    cout << "Enter second string: ";
+    cin.getline(second, 200);
+
+    strcpy(copy, first);
+
+    if (strcmp(copy, second) == 0)
+        cout << "Strings are equal.";
+    else
+        cout << "Strings are not equal.";
+
+    return 0;
+}
+```
+
+## 5. Concatenate two strings using `strcat()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char first[400], second[200];
+
+    cout << "Enter first string: ";
+    cin.getline(first, 200);
+
+    cout << "Enter second string: ";
+    cin.getline(second, 200);
+
+    strcat(first, second);
+
+    cout << "Combined string: " << first;
+    return 0;
+}
+```
+
+## 6. Join first name and last name using `strcat()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char firstName[100], lastName[100], fullName[210] = "";
+
+    cout << "Enter first name: ";
+    cin.getline(firstName, 100);
+
+    cout << "Enter last name: ";
+    cin.getline(lastName, 100);
+
+    strcat(fullName, firstName);
+    strcat(fullName, " ");
+    strcat(fullName, lastName);
+
+    cout << "Full name: " << fullName;
+    return 0;
+}
+```
+
+## 7. Compare two strings using `strcmp()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char first[200], second[200];
+
+    cout << "Enter first string: ";
+    cin.getline(first, 200);
+
+    cout << "Enter second string: ";
+    cin.getline(second, 200);
+
+    int result = strcmp(first, second);
+
+    if (result == 0)
+        cout << "The strings are equal.";
+    else if (result < 0)
+        cout << "The first string comes before the second.";
+    else
+        cout << "The first string comes after the second.";
+
+    return 0;
+}
+```
+
+## 8. Check whether two strings are equal (case-sensitive)
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char first[200], second[200];
+
+    cout << "Enter first string: ";
+    cin.getline(first, 200);
+
+    cout << "Enter second string: ";
+    cin.getline(second, 200);
+
+    if (strcmp(first, second) == 0)
+        cout << "Strings are equal.";
+    else
+        cout << "Strings are not equal.";
+
+    return 0;
+}
+```
+
+## 9. Arrange an array of strings alphabetically using `strcmp()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    int n;
+    char names[50][100], temp[100];
+
+    cout << "Enter number of names: ";
+    cin >> n;
+    cin.ignore(10000, '\n');
+
+    cout << "Enter " << n << " names:\n";
+    for (int i = 0; i < n; i++)
+        cin.getline(names[i], 100);
+
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (strcmp(names[j], names[j + 1]) > 0) {
+                strcpy(temp, names[j]);
+                strcpy(names[j], names[j + 1]);
+                strcpy(names[j + 1], temp);
+            }
+        }
+    }
+
+    cout << "Names in alphabetical order:\n";
+    for (int i = 0; i < n; i++)
+        cout << names[i] << "\n";
+
+    return 0;
+}
+```
+
+## 10. Reverse a string
+
+`strrev()` is available in some compilers, but is not standard C++. This version reverses the characters manually.
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char str[200];
+
+    cout << "Enter a string: ";
+    cin.getline(str, 200);
+
+    int length = strlen(str);
+
+    for (int i = 0; i < length / 2; i++) {
+        char temp = str[i];
+        str[i] = str[length - 1 - i];
+        str[length - 1 - i] = temp;
+    }
+
+    cout << "Reversed string: " << str;
+    return 0;
+}
+```
+
+## 11. Check whether a string is a palindrome
+
+This makes a reversed copy and compares it with the original. The comparison is case-sensitive and includes spaces.
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char str[200], reversed[200];
+
+    cout << "Enter a string: ";
+    cin.getline(str, 200);
+
+    strcpy(reversed, str);
+
+    int length = strlen(reversed);
+    for (int i = 0; i < length / 2; i++) {
+        char temp = reversed[i];
+        reversed[i] = reversed[length - 1 - i];
+        reversed[length - 1 - i] = temp;
+    }
+
+    if (strcmp(str, reversed) == 0)
+        cout << "The string is a palindrome.";
+    else
+        cout << "The string is not a palindrome.";
+
+    return 0;
+}
+```
+
+## 12. Find the first occurrence of a character using `strchr()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char str[200], ch;
+
+    cout << "Enter a string: ";
+    cin.getline(str, 200);
+
+    cout << "Enter the character to find: ";
+    cin >> ch;
+
+    char *result = strchr(str, ch);
+
+    if (result != nullptr)
+        cout << "First occurrence is at position " << (result - str) + 1;
+    else
+        cout << "Character not found.";
+
+    return 0;
+}
+```
+
+## 13. Find the last occurrence of a character using `strrchr()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char str[200], ch;
+
+    cout << "Enter a string: ";
+    cin.getline(str, 200);
+
+    cout << "Enter the character to find: ";
+    cin >> ch;
+
+    char *result = strrchr(str, ch);
+
+    if (result != nullptr)
+        cout << "Last occurrence is at position " << (result - str) + 1;
+    else
+        cout << "Character not found.";
+
+    return 0;
+}
+```
+
+## 14. Find a substring using `strstr()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char text[300], substring[100];
+
+    cout << "Enter the main string: ";
+    cin.getline(text, 300);
+
+    cout << "Enter the substring to find: ";
+    cin.getline(substring, 100);
+
+    char *result = strstr(text, substring);
+
+    if (result != nullptr)
+        cout << "Substring found at position " << (result - text) + 1;
+    else
+        cout << "Substring not found.";
+
+    return 0;
+}
+```
+
+## 15. Check if one string is present in another using `strstr()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char text[300], search[100];
+
+    cout << "Enter the main string: ";
+    cin.getline(text, 300);
+
+    cout << "Enter the string to search for: ";
+    cin.getline(search, 100);
+
+    if (strstr(text, search) != nullptr)
+        cout << "The string is present.";
+    else
+        cout << "The string is not present.";
+
+    return 0;
+}
+```
+
+## 16. Count words using `strlen()` and spaces
+
+This treats any run of spaces as a separator and does not count leading or trailing spaces as words.
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char str[300];
+    int words = 0;
+    bool insideWord = false;
+
+    cout << "Enter a string: ";
+    cin.getline(str, 300);
+
+    for (int i = 0; i < strlen(str); i++) {
+        if (str[i] != ' ' && !insideWord) {
+            words++;
+            insideWord = true;
+        } else if (str[i] == ' ') {
+            insideWord = false;
+        }
+    }
+
+    cout << "Number of words = " << words;
+    return 0;
+}
+```
+
+## 17. Remove all vowels from a string
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <cctype>
+using namespace std;
+
+int main() {
+    char str[300];
+    int writeIndex = 0;
+
+    cout << "Enter a string: ";
+    cin.getline(str, 300);
+
+    for (int readIndex = 0; readIndex < strlen(str); readIndex++) {
+        char ch = tolower(static_cast<unsigned char>(str[readIndex]));
+
+        if (ch != 'a' && ch != 'e' && ch != 'i' &&
+            ch != 'o' && ch != 'u') {
+            str[writeIndex] = str[readIndex];
+            writeIndex++;
+        }
+    }
+
+    str[writeIndex] = '\0';
+
+    cout << "String without vowels: " << str;
+    return 0;
+}
+```
+
+## 18. Copy the first 5 characters using `strncpy()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char source[200], destination[6];
+
+    cout << "Enter a string: ";
+    cin.getline(source, 200);
+
+    strncpy(destination, source, 5);
+    destination[5] = '\0';
+
+    cout << "Copied characters: " << destination;
+    return 0;
+}
+```
+
+## 19. Join multiple strings into one sentence using `strcat()`
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    int n;
+    char sentence[1000] = "";
+    char word[100];
+
+    cout << "How many words? ";
+    cin >> n;
+    cin.ignore(10000, '\n');
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter word " << i + 1 << ": ";
+        cin.getline(word, 100);
+
+        if (i > 0)
+            strcat(sentence, " ");
+
+        strcat(sentence, word);
+    }
+
+    cout << "Sentence: " << sentence;
+    return 0;
+}
+```
+
+## 20. Check whether two strings are anagrams
+
+This version ignores spaces and letter case. It uses character counting after removing spaces.
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <cctype>
+using namespace std;
+
+int main() {
+    char first[300], second[300];
+    int counts[256] = {};
+
+    cout << "Enter first string: ";
+    cin.getline(first, 300);
+
+    cout << "Enter second string: ";
+    cin.getline(second, 300);
+
+    for (int i = 0; i < strlen(first); i++) {
+        unsigned char ch = static_cast<unsigned char>(first[i]);
+        if (!isspace(ch))
+            counts[tolower(ch)]++;
+    }
+
+    for (int i = 0; i < strlen(second); i++) {
+        unsigned char ch = static_cast<unsigned char>(second[i]);
+        if (!isspace(ch))
+            counts[tolower(ch)]--;
+    }
+
+    bool anagrams = true;
+    for (int i = 0; i < 256; i++) {
+        if (counts[i] != 0) {
+            anagrams = false;
+            break;
+        }
+    }
+
+    if (anagrams)
+        cout << "The strings are anagrams.";
+    else
+        cout << "The strings are not anagrams.";
+
+    return 0;
+}
+```
